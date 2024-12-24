@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyeux Noël</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 1;
+        }
+
+        .text-line {
+            margin: 0;
+            padding: 0;
+        }
+
+        .letter {
+            display: inline-block;
+            color: #fff;
+            font-size: 5em;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(50px) rotate(20deg);
+            animation: appearAndGlow 0.5s ease-out forwards;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .second-line .letter {
+            font-size: 3em;
+            color: #ff4d4d;
+        }
+
+        .signature .letter {
+            font-size: 1.5em;
+            color: #4dff4d;
+        }
+
+        .snow {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            top: -10px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes appearAndGlow {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotate(20deg);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                            0 0 30px #ff4d4d,
+                            0 0 40px #ff4d4d,
+                            0 0 50px #ff4d4d,
+                            0 0 60px #ff4d4d;
+            }
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-line" id="firstLine"></div>
+        <div class="text-line second-line" id="secondLine"></div>
+    </div>
+    <div class="signature" id="signature"></div>
+
+    <script>
+        function animateText(text, containerId, startDelay = 0) {
+            const container = document.getElementById(containerId);
+            text.split('').forEach((letter, index) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = letter === ' ' ? '\u00A0' : letter;
+                span.style.animationDelay = `${startDelay + index * 0.2}s`;
+                container.appendChild(span);
+            });
+        }
+
+        animateText("Merry Christmas", "firstLine", 0);
+        animateText("Mother Fucker", "secondLine", 2.5);
+        animateText("Made by Tobi", "signature", 4.5);
+
+        function createSnow() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snow');
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.opacity = Math.random() * 0.8 + 0.2;
+            snowflake.style.width = Math.random() * 8 + 2 + 'px';
+            snowflake.style.height = snowflake.style.width;
+            
+            const duration = Math.random() * 3 + 4;
+            snowflake.style.animation = `fall ${duration}s linear infinite`;
+            
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createSnow, 100);
+    </script>
+</body>
+</html>
